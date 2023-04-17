@@ -1,0 +1,25 @@
+
+.padreButtom {
+    width: 100%;
+    min-width: 210px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.padreButtom button{
+    border: none;
+    padding: 2px 15px;
+    border-bottom: 1px solid;
+    background: transparent;
+    border-radius: 2px;
+    transition: 0.7s all ease;
+}
+.padreButtom button:hover{
+    transition: 0.7s all ease;
+    background-color: gray;
+    color: white;
+}
+/* CSS DEL AGREGAR USURIOS */

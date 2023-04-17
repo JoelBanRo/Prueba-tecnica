@@ -1,0 +1,92 @@
+<?php 
+/*
+class Persona extends Controlador{
+    public function __construct(){
+        $this->usuarioModelo = $this->modelo('persona');
+    }
+    public function index(){
+
+        //OBTENER LOS USUARIOS 
+        $usuarios = $this->usuarioModelo->obtenerUsuarios();
+
+        $datos = [
+            'usuarios' => $usuarios
+        ];
+
+        $this->vista('persona', $datos);
+    }
+    public function agregar(){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $datos = [
+                'nombre' => trim($_POST['nombre']),
+                'email' => trim($_POST['email']),
+                'telefono' => trim($_POST['telefono']),
+            ];
+
+            if ($this->usuarioModelo->agregarUsuario($datos)) {
+                redireccionar('/paginas');
+            }else{
+                die('Algo salio mal');
+            }
+        }else{
+            $datos =[
+                'nombre' => '',
+                'email' => '',
+                'telefono' => '',
+            ];
+            $this->vista('paginas/agregar', $datos);
+        }
+    }
+    
+    public function editar($id){
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $datos = [
+                'id_usuario' => $id,
+                'nombre' => trim($_POST['nombre']),
+                'email' => trim($_POST['email']),
+                'telefono' => trim($_POST['telefono']),
+            ];
+
+            if ($this->usuarioModelo->actualizarUsuario($datos)) {
+                redireccionar('/paginas');
+            }else{
+                die('Algo salio mal');
+            }
+        }else{
+
+            //obtener informacion de usuario desde el modelo 
+            $usuario = $this->usuarioModelo->obtenerUsuarioId($id);
+            $datos =[
+                'id_usuario' => $usuario->id_usuario,
+                'nombre' => $usuario->nombre,
+                'email' => $usuario->email,
+                'telefono' => $usuario->telefono
+            ];
+            $this->vista('paginas/editar', $datos);
+        }
+    }
+    public function borrar($id){
+          //obtener informacion de usuario desde el modelo 
+          $usuario = $this->usuarioModelo->obtenerUsuarioId($id);
+          $datos =[
+              'id_usuario' => $usuario->id_usuario
+          ];
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $datos = [
+                'id_usuario' => $id,
+                'nombre' => trim($_POST['nombre']),
+                'email' => trim($_POST['email']),
+                'telefono' => trim($_POST['telefono']),
+            ];
+
+            if ($this->usuarioModelo->borrarUsuario($datos)) {
+                redireccionar('/paginas');
+            }else{
+                die('Algo salio mal');
+            }
+        }
+        $this->vista('paginas/borrar', $datos);
+    }
+}

@@ -33,12 +33,13 @@ class Persona extends Controlador{
 
             $this->ModeloPersona->AgrePersona($datos);
             $id_persona = $this->ModeloPersona->PersonasDocumento($identificacion);
+            json_encode($id_persona);
             $datos =  [
-                'id_persona' => $id_persona,
+                'id_persona' => $id_persona->id_Persona,
                 'id_vehiculo' => $id_vehiculo
             ];
             $resul = $this->ModeloPersona->AgregarHistorial($datos);
-            echo json_encode($resul);
+            echo $resul;
 
         }else{
             $datos =[

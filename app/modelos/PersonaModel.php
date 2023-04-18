@@ -35,7 +35,7 @@
 
     public function PersonasDocumento($identificacion)
     {
-        $this->db->query("SELECT id AS Id_Persona FROM persona WHERE  identificacion = '$identificacion'");
+        $this->db->query("SELECT id AS id_Persona FROM persona WHERE  identificacion = '$identificacion'");
         $resultados = $this->db->registro();
         return $resultados;
     }

@@ -134,11 +134,13 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 <script type="text/javascript">
-
+    let tablaPersona = $("#tablaPersona").DataTable({ retrieve: true, paging: false });
     $(document).ready( function () { 
         var cont = 0 ;
         var activoModal = "";
-        var tablaPersona = $('#myTable').DataTable({
+        
+        tablaPersona.destroy();
+        tablaPersona = $('#myTable').DataTable({
             data: <?php echo $datos['listaVehiculo']?>,
             columns: [
                 { 
@@ -186,6 +188,7 @@
             }).done((res) => {
                 if(res == 1){
                     $("#ModalPersona").modal("hide");
+                    $('#form')[0].reset();
                     tablaPersona.ajax.reload(null, false);
                 }else{
                     $("#ModalPersona").modal("hide");
@@ -248,6 +251,7 @@
                 if(res == 1){
                     $("#ModalPersona").modal("hide");
                     alert("exito");
+                    $('#form1')[0].reset();
                     tablaPersona.ajax.reload(null, false);
                 }else{
                     $("#ModalPersona").modal("hide");

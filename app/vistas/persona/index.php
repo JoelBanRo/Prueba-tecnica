@@ -200,7 +200,10 @@
         var cont = 0 ;
         var activoModal = "";
         var tablaPersona = $('#myTable').DataTable({
-            data: <?php echo $datos['listaPersona']?>,
+            //data: <?php echo $datos['listaPersona']?>,
+            ajax: {
+                url: '<?php echo RUTA_URL?>/Persona/listarPersonal',
+            },
             columns: [
                 { 
                     data: null, 
@@ -219,11 +222,33 @@
                 {
                     data: null,
                     render : (data, row, type) => {
-                        return ' <div class="padreButtom" >  <button onclick="HistPersVehiculo(' + data.id + ')">Historial</button><button onclick="EditarPersona(' + data.id + ')">Editar</button> <button onclick="EiminarPersona(' + data.id + ')">Borrar</button> </div>'
+                        return ' <div class="padreButtom" >  <button onclick="HistPersVehiculo(' + data.id + ')">Historial</button><button onclick="EditarPersona(' + data.id + ')">Editar</button> <button id="' + data.id + '" onclick="EiminarPersona(' + data.id + ')">Borrar</button> </div>'
                     }
                 }
 
             ]
+        });
+
+
+        $('.btnEliminar').on('click', function(e) {
+            e.preventDefault();
+            var dato = $(this).attr("id");
+        $.ajax({
+            url: '<?php echo RUTA_URL?>/Persona/EiminarPersona',
+            type: 'POST',
+            data: {
+                id: dato
+            }
+        }).done((res) => {
+            console.log(res);
+                if(res == 1){
+                    $("#ModalPersona").modal("hide");
+                    tablaPersona.ajax.reload(null, false);
+                }else{
+                    $("#ModalPersona").modal("hide");
+                    alert('incoveniente en el proceso');
+                }
+        });
         });
 
     });
@@ -385,32 +410,20 @@
         $('.btnGuardar').hide();
         $('.btnGuardarAg').hide();
         $('.btnEliminar').show();
+        $('.btnEliminar').attr('id', id_persona)
         $('.BorrarModal').show();
         $("#ModalPersona").modal("show");
         $('#modal-dialog').removeClass('modal-dialog modal-lg');
         $('#modal-dialog').addClass('modal-dialog');
 
-        $('.btnEliminar').on('click', function(e) {
-            e.preventDefault();
-        $.ajax({
-            url: '<?php echo RUTA_URL?>/Persona/EiminarPersona',
-            type: 'POST',
-            data: {
-                id_persona
-            }
-        }).done((res) => {
-            console.log(res);
-                if(res == 1){
-                    $("#ModalPersona").modal("hide");
-                    tablaPersona.ajax.reload(null, false);
-                }else{
-                    $("#ModalPersona").modal("hide");
-                    alert('incoveniente en el proceso');
-                }
-        });
-    });
+
 
 
     }
+
+
+    
+
+
 
 </script>

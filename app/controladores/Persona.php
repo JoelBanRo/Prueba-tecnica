@@ -14,6 +14,13 @@ class Persona extends Controlador{
             'listaVehiculo' => $resulListVehiculo
         ];
         $this->vista('persona/index', $datos);
+        
+    }
+
+    public function listarPersonal(){
+        
+
+        echo json_encode(['data' => $this->ModeloPersona->ListarPersonas()]);
     }
 
     public function AgrePersona(){ 
@@ -106,7 +113,7 @@ class Persona extends Controlador{
     }
 
     public function EiminarPersona(){
-        $id_persona = $_POST['id_persona'];
+        $id_persona = $_POST['id'];
         $resul = $this->ModeloPersona->ElimPersona($id_persona);
         echo $resul;
     }

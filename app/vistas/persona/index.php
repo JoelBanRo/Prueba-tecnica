@@ -197,7 +197,7 @@
 <script type="text/javascript">
     $(document).ready( function () { 
 
-        var cont = 0 ;
+        var contList = 0 ;
         var activoModal = "";
         var tablaPersona = $('#myTable').DataTable({
             //data: <?php echo $datos['listaPersona']?>,
@@ -208,8 +208,8 @@
                 { 
                     data: null, 
                     render : (data, row, type) => {
-                        cont = cont + 1;
-                        return "<b>" + cont + "</b>";
+                        contList = contList + 1;
+                        return "<b>" + contList + "</b>";
                     }
                 },
                 { data: 'nombres' },
@@ -233,38 +233,59 @@
         $('.btnEliminar').on('click', function(e) {
             e.preventDefault();
             var dato = $(this).attr("id");
-        $.ajax({
-            url: '<?php echo RUTA_URL?>/Persona/EiminarPersona',
-            type: 'POST',
-            data: {
-                id: dato
-            }
-        }).done((res) => {
-            console.log(res);
+            $.ajax({
+                url: '<?php echo RUTA_URL?>/Persona/EiminarPersona',
+                type: 'POST',
+                data: {
+                    id: dato
+                }
+            }).done((res) => {
+                console.log(res);
+                    if(res == 1){
+                        $("#ModalPersona").modal("hide");
+                        tablaPersona.ajax.reload(null, false);
+                    }else{
+                        $("#ModalPersona").modal("hide");
+                        alert('incoveniente en el proceso');
+                    }
+            });
+        });
+
+        $('.btnGuardar').on('click', function(e) {
+            e.preventDefault();
+
+
+            // var datosForm = $('#form1').serialize();
+            // datosForm = datosForm + '&id=' + datos[0].id;
+            // console.log(datosForm);
+
+            nombres = $('#nombreE').val();
+            apellidos = $('#apellidoE').val();
+            identificacion = $('#identificacionE').val();
+            fecha_nacimiento = $('#fecha_nacimientoE').val();
+            profesion_oficio = $('#profecionE').val();
+            es_casado = $('#casadoE').val();
+            ingresos_mensuales = $('#ingresoE').val();
+            vehiculo_actual = $("#vehiculoE").val();
+
+             $.ajax({
+                url: '<?php echo RUTA_URL?>/Persona/EditPersona',
+                type: 'POST',
+                data: { id:datos[0].id, nombre:nombres, apellido:apellidos, identificacion:identificacion,fecha_nacimiento:fecha_nacimiento,profesion:profesion_oficio,casado:es_casado,ingreso:ingresos_mensuales,vehiculo:vehiculo_actual }
+            }).done((res) => {
+                
                 if(res == 1){
                     $("#ModalPersona").modal("hide");
+                    alert("exito");
+                    $('#form1')[0].reset();
                     tablaPersona.ajax.reload(null, false);
                 }else{
                     $("#ModalPersona").modal("hide");
                     alert('incoveniente en el proceso');
                 }
-        });
+            });
         });
 
-    });
-
-    function AgrePersona() {
-        $('.BitModal').hide();
-        $('#tituloModal').text('Agregar Persona')
-        $('.EditModal').hide();
-        $('.AgreModald').show();
-        $('.btnGuardar').hide();
-        $('.btnEliminar').hide();
-        $('.btnGuardarAg').show();
-        $('.BorrarModal').hide();
-        $("#ModalPersona").modal("show");
-        $('#modal-dialog').removeClass('modal-dialog modal-lg');
-        $('#modal-dialog').addClass('modal-dialog');
 
         $('.btnGuardarAg').on('click', function(e) {
             e.preventDefault();
@@ -286,7 +307,26 @@
             }).fail((res) => {
                 console.log(res);
             })
-        });    
+        }); 
+
+
+
+    });
+
+    function AgrePersona() {
+        $('.BitModal').hide();
+        $('#tituloModal').text('Agregar Persona')
+        $('.EditModal').hide();
+        $('.AgreModald').show();
+        $('.btnGuardar').hide();
+        $('.btnEliminar').hide();
+        $('.btnGuardarAg').show();
+        $('.BorrarModal').hide();
+        $("#ModalPersona").modal("show");
+        $('#modal-dialog').removeClass('modal-dialog modal-lg');
+        $('#modal-dialog').addClass('modal-dialog');
+
+           
     }
 
     function HistPersVehiculo(id_persona) {
@@ -365,40 +405,7 @@
 
         });
 
-        $('.btnGuardar').on('click', function(e) {
-            e.preventDefault();
 
-
-            // var datosForm = $('#form1').serialize();
-            // datosForm = datosForm + '&id=' + datos[0].id;
-            // console.log(datosForm);
-
-            nombres = $('#nombreE').val();
-            apellidos = $('#apellidoE').val();
-            identificacion = $('#identificacionE').val();
-            fecha_nacimiento = $('#fecha_nacimientoE').val();
-            profesion_oficio = $('#profecionE').val();
-            es_casado = $('#casadoE').val();
-            ingresos_mensuales = $('#ingresoE').val();
-            vehiculo_actual = $("#vehiculoE").val();
-
-             $.ajax({
-                url: '<?php echo RUTA_URL?>/Persona/EditPersona',
-                type: 'POST',
-                data: { id:datos[0].id, nombre:nombres, apellido:apellidos, identificacion:identificacion,fecha_nacimiento:fecha_nacimiento,profesion:profesion_oficio,casado:es_casado,ingreso:ingresos_mensuales,vehiculo:vehiculo_actual }
-            }).done((res) => {
-                
-                if(res == 1){
-                    $("#ModalPersona").modal("hide");
-                    alert("exito");
-                    $('#form1')[0].reset();
-                    tablaPersona.ajax.reload(null, false);
-                }else{
-                    $("#ModalPersona").modal("hide");
-                    alert('incoveniente en el proceso');
-                }
-            });
-        });
 
     }
 

@@ -156,7 +156,7 @@
                 {
                     data: null,
                     render : (data, row, type) => {
-                        return ' <div class="padreButtom" ><button onclick="EditarVehiculo(' + data.id + ')">Editar</button> <button onclick="EliminarVehiculo(' + data.id + ')">Borrar</button> </div>'
+                        return ' <div class="padreButtom" ><button onclick="EditarVehiculo(' + data.id + ')"><i class="bi bi-pencil-square"></i></button></button> <button onclick="EliminarVehiculo(' + data.id + ')"><i class="bi bi-trash3-fill text-danger"></i></button> </div>'
                     }
                 }
 
@@ -177,6 +177,7 @@
                     $('#form')[0].reset();
                     cont = 0 ;
                     tablaPersona.ajax.reload(null, false);
+                    alert('Registro agregado con exito');
                 }else{
                     $("#ModalPersona").modal("hide");
                     alert('incoveniente en el proceso');
@@ -211,7 +212,7 @@
             }).done((res) => {
                 if(res == 1){
                     $("#ModalPersona").modal("hide");
-                    alert("exito");
+                    alert("Registro editado con exito");
                     $('#form1')[0].reset();
                     tablaPersona.ajax.reload(null, false);
                 }else{
@@ -238,6 +239,7 @@
                 if(res == 1){
                     $("#ModalPersona").modal("hide");
                     tablaPersona.ajax.reload(null, false);
+                    alert('Registro eliminado con exito');
                 }else{
                     $("#ModalPersona").modal("hide");
                     alert('incoveniente en el proceso');

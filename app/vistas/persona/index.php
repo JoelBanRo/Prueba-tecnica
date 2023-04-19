@@ -236,7 +236,7 @@
                 {
                     data: null,
                     render : (data, row, type) => {
-                        return ' <div class="padreButtom" >  <button onclick="HistPersVehiculo(' + data.id + ')">Historial</button><button onclick="EditarPersona(' + data.id + ')">Editar</button> <button id="' + data.id + '" onclick="EiminarPersona(' + data.id + ')">Borrar</button> </div>'
+                        return ' <div class="padreButtom" >  <button onclick="HistPersVehiculo(' + data.id + ')"><i class="bi bi-file-earmark-text-fill text-success"></i></button><button onclick="EditarPersona(' + data.id + ')"><i class="bi bi-pencil-square"></i></button> <button id="' + data.id + '" onclick="EiminarPersona(' + data.id + ')"><i class="bi bi-trash3-fill text-danger"></i></button> </div>'
                     }
                 }
 
@@ -259,6 +259,7 @@
                         $("#ModalPersona").modal("hide");
                         contList = 0 ;
                         tablaPersona.ajax.reload(null, false);
+                        alert('Registro eliminado con exito');
                     }else{
                         $("#ModalPersona").modal("hide");
                         alert('incoveniente en el proceso');
@@ -291,7 +292,7 @@
                 
                 if(res == 1){
                     $("#ModalPersona").modal("hide");
-                    alert("exito");
+                    alert("Registro editado con exito");
                     $('#form1')[0].reset();
                     contList = 0 ;
                     tablaPersona.ajax.reload(null, false);
@@ -312,11 +313,11 @@
                 type: 'POST',
                 data: datos
             }).done((res) => {
-                console.log(res);
                 if(res == 1){
                     $("#ModalPersona").modal("hide");
                     contList = 0 ;
                     tablaPersona.ajax.reload(null, false);
+                    alert('Registro agregado con exito');
                 }else{
                     $("#ModalPersona").modal("hide");
                     alert('incoveniente en el proceso');

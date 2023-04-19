@@ -136,10 +136,10 @@
     $(document).ready( function () { 
         var cont = 0 ;
         var activoModal = "";
-        let tablaPersona = $("#tablaPersona").DataTable({ retrieve: true, paging: false });
-        tablaPersona.destroy();
-        tablaPersona = $('#myTable').DataTable({
-            data: <?php echo $datos['listaVehiculo']?>,
+        var tablaPersona = $('#myTable').DataTable({
+            ajax: {
+                url: '<?php echo RUTA_URL?>/Vehiculo/listarVehiculos',
+            },
             columns: [
                 { 
                     data: null, 
@@ -163,19 +163,7 @@
             ]
         });
 
-    }); 
-
-    function AgreVehiculo() {
-        $('#tituloModal').text('Agregar Vehiculo')
-        $('.EditModal').hide();
-        $('.AgreModald').show();
-        $('.btnGuardar').hide();
-        $('.btnGuardarAg').show();
-        $('.BorrarModal').hide();
-        $('.btnEliminar').hide();
-        $("#ModalPersona").modal("show");
-
-        $('.btnGuardarAg').on('click', function(e) {
+         $('.btnGuardarAg').on('click', function(e) {
             e.preventDefault();
             var datos = $('#form').serialize();
             console.log(datos);
@@ -187,40 +175,15 @@
                 if(res == 1){
                     $("#ModalPersona").modal("hide");
                     $('#form')[0].reset();
+                    cont = 0 ;
                     tablaPersona.ajax.reload(null, false);
                 }else{
                     $("#ModalPersona").modal("hide");
                     alert('incoveniente en el proceso');
                 }
             });
-        });   
-    }
-
-    function EditarVehiculo(id_vehiculo) {
-        var datos;
-        $('#tituloModal').text('Editar Vehiculo')
-        $('.EditModal').show();
-        $('.AgreModald').hide();
-        $('.btnGuardarAg').hide();
-        $('.btnGuardar').show();
-        $('.BorrarModal').hide();
-        $('.btnEliminar').hide();
-        $("#ModalPersona").modal("show");
-
-        $.ajax({
-            url: '<?php echo RUTA_URL?>/Vehiculo/ObtnVehiculo',
-            type: 'POST',
-            data: {
-                    id_vehiculo
-                }
-        }).done((res) => {
-            datos = JSON.parse(res);
-            $("#marcaE").val(datos[0].marca);
-            $("#modeloE").val(datos[0].modelo);
-            $("#tiVehiculoE").val(datos[0].tipo_vehiculo);
-            $("#numPuertasE").val(datos[0].numero_puertas);
-            $("#placaE").val(datos[0].placa);
         });
+
 
 
         $('.btnGuardar').on('click', function(e) {
@@ -258,26 +221,17 @@
             });
 
         
-        }); 
-    }
+        });
 
-    function EliminarVehiculo(id_vehiculo){
-        $('#tituloModal').text('Eliminar Vehiculo');
-        $('.EditModal').hide();
-        $('.AgreModald').hide();
-        $('.btnGuardar').hide();
-        $('.btnGuardarAg').hide();
-        $('.btnEliminar').show();
-        $('.BorrarModal').show();
-        $("#ModalPersona").modal("show");
 
         $('.btnEliminar').on('click', function(e) {
             e.preventDefault();
+             var dato = $(this).attr("id");
             $.ajax({
                 url: '<?php echo RUTA_URL?>/Vehiculo/ElimVehiculo',
                 type: 'POST',
                 data: {
-                    id_vehiculo
+                    id_vehiculo: dato
                 }
             }).done((res) => {
                 console.log(res);
@@ -291,6 +245,63 @@
 
             });
         });
+
+    }); 
+
+    function AgreVehiculo() {
+        $('#tituloModal').text('Agregar Vehiculo')
+        $('.EditModal').hide();
+        $('.AgreModald').show();
+        $('.btnGuardar').hide();
+        $('.btnGuardarAg').show();
+        $('.BorrarModal').hide();
+        $('.btnEliminar').hide();
+        $("#ModalPersona").modal("show");
+
+          
+    }
+
+    function EditarVehiculo(id_vehiculo) {
+        $('#tituloModal').text('Editar Vehiculo')
+        $('.EditModal').show();
+        $('.AgreModald').hide();
+        $('.btnGuardarAg').hide();
+        $('.btnGuardar').show();
+        $('.BorrarModal').hide();
+        $('.btnEliminar').hide();
+        $("#ModalPersona").modal("show");
+
+        $.ajax({
+            url: '<?php echo RUTA_URL?>/Vehiculo/ObtnVehiculo',
+            type: 'POST',
+            data: {
+                    id_vehiculo
+                }
+        }).done((res) => {
+            datos = JSON.parse(res);
+            $("#marcaE").val(datos[0].marca);
+            $("#modeloE").val(datos[0].modelo);
+            $("#tiVehiculoE").val(datos[0].tipo_vehiculo);
+            $("#numPuertasE").val(datos[0].numero_puertas);
+            $("#placaE").val(datos[0].placa);
+        });
+
+
+ 
+    }
+
+    function EliminarVehiculo(id_vehiculo){
+        $('#tituloModal').text('Eliminar Vehiculo');
+        $('.EditModal').hide();
+        $('.AgreModald').hide();
+        $('.btnGuardar').hide();
+        $('.btnGuardarAg').hide();
+        $('.btnEliminar').show();
+        $('.BorrarModal').show();
+        $('.btnEliminar').attr('id', id_vehiculo)
+        $("#ModalPersona").modal("show");
+
+        
     }
 
 

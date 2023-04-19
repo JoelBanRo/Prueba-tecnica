@@ -12,6 +12,13 @@ class Vehiculo extends Controlador {
         ];
         $this->vista('vehiculo/index', $datos);
     }
+
+    public function ListarVehiculos(){
+        
+
+        echo json_encode(['data' => $this->ModeloVehiculo->ListarVehiculos()]);
+    }
+
  
     public function AgreVehiculo(){
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {

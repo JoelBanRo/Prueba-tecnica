@@ -39,37 +39,35 @@
                                     </div>
                                     <div class="modal-body EditModal">
 
-                                        <?php var_dump($vehiculo); ?>    
-
                                         <form action="" method="post" id="form1">
                                         <div class="row">
                                             <div class="col-12">
                                                 <b>MARCA:</b>
-                                                <input class="form-control" type="text" name="marca" id="marca">
+                                                <input class="form-control" type="text" name="marca" id="marcaE">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
                                                 <b>MODELO:</b>
-                                                <input class="form-control" type="text" name="modelo" id="modelo">
+                                                <input class="form-control" type="text" name="modelo" id="modeloE">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
                                                 <b>TIPO DE VEHICULO:</b>
-                                                <input class="form-control" type="text" name="tiVehiculo" id="tiVehiculo">
+                                                <input class="form-control" type="text" name="tiVehiculo" id="tiVehiculoE">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <b>NUMERO DE PUERTAS:</b>
                                             <div class="col-12">
-                                                <input class="form-control" type="number" name="numPuertas" id="numPuertas">
+                                                <input class="form-control" type="number" name="numPuertas" id="numPuertasE">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <b>PLACA</b>
                                             <div class="col-12">
-                                                <input class="form-control" type="text" name="placa" id="placa">
+                                                <input class="form-control" type="text" name="placa" id="placaE">
                                             </div>
                                         </div>
                                     </div>
@@ -134,11 +132,11 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 <script type="text/javascript">
-    let tablaPersona = $("#tablaPersona").DataTable({ retrieve: true, paging: false });
+    
     $(document).ready( function () { 
         var cont = 0 ;
         var activoModal = "";
-        
+        let tablaPersona = $("#tablaPersona").DataTable({ retrieve: true, paging: false });
         tablaPersona.destroy();
         tablaPersona = $('#myTable').DataTable({
             data: <?php echo $datos['listaVehiculo']?>,
@@ -201,8 +199,8 @@
     function EditarPersona(id_vehiculo) {
         var datos;
         $('#tituloModal').text('Editar Vehiculo')
-        $('.EditModal').hide();
-        $('.AgreModald').show();
+        $('.EditModal').show();
+        $('.AgreModald').hide();
         $('.btnGuardarAg').hide();
         $('.btnGuardar').show();
         $('.BorrarModal').hide();

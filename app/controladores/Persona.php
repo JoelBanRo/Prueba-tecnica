@@ -53,7 +53,11 @@ class Persona extends Controlador{
     public function HistPersVehiculo(){
         $id_persona = $_POST['id_persona'];
         $resul = $this->ModeloPersona->HistPersVehiculo($id_persona);
-        echo json_encode($resul);
+
+        $datos = [
+            'historial' => $resul
+        ];
+        echo json_encode($datos);
 
     }
 

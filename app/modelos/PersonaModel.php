@@ -41,7 +41,7 @@
     }
 
     public function HistPersVehiculo($id_persona){
-        $this->db->query("SELECT * FROM historial INNER JOIN vehiculo on historial.id = vehiculo.id where id_persona = $id_persona");
+        $this->db->query("SELECT * FROM historial INNER JOIN vehiculo on historial.id_vehiculo = vehiculo.id where id_persona = $id_persona");
         return $this->db->registros();
     }
 

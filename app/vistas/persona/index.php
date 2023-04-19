@@ -38,7 +38,27 @@
                                         <h5 class="modal-title" id="tituloModal"></h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body BitModal"> este es el historial</div>
+                                    <div class="modal-body BitModal"> 
+
+                                    <div class="table-responsive">
+                                        <table id="listHist" class="display" style="width:100%">
+                                        <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">MARCA</th>
+                                                    <th scope="col">MODELO</th>
+                                                    <th scope="col">TIPO DE VEHICULO</th>
+                                                    <th scope="col"># DE PUERTAS</th>
+                                                    <th scope="col">PLACA</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    </div>
                                     <div class="modal-body EditModal">
                                         <form action="" method="post" id="form1">
                                         <div class="row">
@@ -92,7 +112,8 @@
                                     </div>
                                     </form>
                                     <div class="modal-body BorrarModal">
-                                        <h1>quiere borrar?</h1>
+                                        <h1 class="text-danger"><i class="bi bi-slash-circle"></i></h1>
+                                        <p><b>¿Deseas eliminar esta persona?</b></p>
                                     </div>
                                     <form action="" method="post" id="form">
                                     <div class="modal-body AgreModald">
@@ -155,6 +176,7 @@
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR </button>
                                         <button type="button" id="registroPersona" class="btn btn-primary btnGuardarAg">GUARDAR REGISTRO</button>
                                         <button type="button" id="editPersona" class="btn btn-primary btnGuardar">GUARDAR </button>
+                                        <button type="button" id="" class="btn btn-outline-danger btnEliminar">ELIMINAR </button>
                                     </div>
                                 </form>
                                 </div>
@@ -171,6 +193,7 @@
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 <script type="text/javascript">
     $(document).ready( function () { 
+
         var cont = 0 ;
         var activoModal = "";
         var tablaPersona = $('#myTable').DataTable({
@@ -208,6 +231,7 @@
         $('.EditModal').hide();
         $('.AgreModald').show();
         $('.btnGuardar').hide();
+        $('.btnEliminar').hide();
         $('.btnGuardarAg').show();
         $('.BorrarModal').hide();
         $("#ModalPersona").modal("show");
@@ -238,27 +262,47 @@
     }
 
     function HistPersVehiculo(id_persona) {
+        var cont = 0 ;
         $('.BitModal').show();
         $('#tituloModal').text('Bitacoras')
         $('.EditModal').hide();
         $('.BorrarModal').hide();
         $('.AgreModald').hide();
+        $('.btnEliminar').hide();
         $('.btnGuardar').hide();
         $('.btnGuardarAg').hide();
         $("#ModalPersona").modal("show");
         $('#modal-dialog').removeClass('modal-dialog')
         $('#modal-dialog').addClass('modal-dialog modal-lg');
 
-        // $.ajax({
-        //     url: '<?php #echo RUTA_URL?>/Persona/HistPersVehiculo',
-        //     type: 'POST',
-        //     data: {
-        //         id_persona
-        //     }
-        // }).done((res) => {
-        //     console.log(res);
-        //     $("#ModalPersona").modal("show");
-        // });
+        $.ajax({
+            url: '<?php echo RUTA_URL?>/Persona/HistPersVehiculo',
+            type: 'POST',
+            data: {
+                id_persona
+            }
+        }).done((res) => {
+            objHistori = JSON.parse(res)
+            var listaHis = $('#listHist').DataTable({ retrieve: true, paging: false });
+            listaHis.destroy();
+            $('#listHist').DataTable({
+            data: objHistori['historial'],
+            columns: [
+                { 
+                    data: null, 
+                    render : (data, row, type) => {
+                        cont = cont + 1;
+                        return "<b>" + cont + "</b>";
+                    }
+                },
+                { data: 'marca' },
+                { data: 'modelo' },
+                { data: 'numero_puertas' },
+                { data: 'tipo_vehiculo' },
+                { data: 'placa' },
+            ]
+        });
+        });
     }
 
     function EditarPersona(id_persona) {
@@ -267,6 +311,7 @@
         $('.EditModal').show();
         $('.BorrarModal').hide();
         $('.AgreModald').hide();
+        $('.btnEliminar').hide();
         $('.btnGuardar').show();
         $('.btnGuardarAg').hide();
         $("#ModalPersona").modal("show");
@@ -291,22 +336,33 @@
         $('.AgreModald').hide();
         $('.btnGuardar').hide();
         $('.btnGuardarAg').hide();
+        $('.btnEliminar').show();
         $('.BorrarModal').show();
         $("#ModalPersona").modal("show");
         $('#modal-dialog').removeClass('modal-dialog modal-lg');
         $('#modal-dialog').addClass('modal-dialog');
 
+        $('.btnEliminar').on('click', function(e) {
+            e.preventDefault();
+        $.ajax({
+            url: '<?php echo RUTA_URL?>/Persona/EiminarPersona',
+            type: 'POST',
+            data: {
+                id_persona
+            }
+        }).done((res) => {
+            console.log(res);
+                if(res == 1){
+                    $("#ModalPersona").modal("hide");
+                    tablaPersona.ajax.reload(null, false);
+                }else{
+                    $("#ModalPersona").modal("hide");
+                    alert('incoveniente en el proceso');
+                }
+        });
+    });
 
-        // $.ajax({
-        //     url: '<?php echo RUTA_URL?>/Persona/EiminarPersona',
-        //     type: 'POST',
-        //     data: {
-        //         id_persona
-        //     }
-        // }).done((res) => {
-        //     console.log(res);
-        //     $("#ModalPersona").modal("show");
-        // });
+
     }
 
 </script>

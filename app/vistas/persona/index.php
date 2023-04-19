@@ -1,4 +1,5 @@
 <?php require_once RUTA_APP . '/vistas/inc/header.php'; ?>
+
 <a href="<?php echo RUTA_URL; ?>/paginas"><i class="fas fa-arrow-alt-circle-left"></i></a>
 <main>
     <div class="container mt-2">
@@ -191,9 +192,26 @@
     </div>
 </main>
 
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/v/dt/jq-3.6.0/jszip-2.5.0/dt-1.13.4/b-2.3.6/b-colvis-2.3.6/b-html5-2.3.6/r-2.4.1/datatables.min.js"></script>
+
+</body>
+</html>
+
+
+
 <?php require RUTA_APP . '/vistas/inc/footer.php'; ?>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
 <script type="text/javascript">
     $(document).ready( function () { 
 
@@ -201,6 +219,10 @@
         var activoModal = "";
         var tablaPersona = $('#myTable').DataTable({
             //data: <?php echo $datos['listaPersona']?>,
+            dom: 'Bfrtip',
+        buttons: [
+            'excel', 'pdfHtml5'
+        ],
             ajax: {
                 url: '<?php echo RUTA_URL?>/Persona/listarPersonal',
             },
@@ -243,6 +265,7 @@
                 console.log(res);
                     if(res == 1){
                         $("#ModalPersona").modal("hide");
+                        contList = 0 ;
                         tablaPersona.ajax.reload(null, false);
                     }else{
                         $("#ModalPersona").modal("hide");
@@ -278,6 +301,7 @@
                     $("#ModalPersona").modal("hide");
                     alert("exito");
                     $('#form1')[0].reset();
+                    contList = 0 ;
                     tablaPersona.ajax.reload(null, false);
                 }else{
                     $("#ModalPersona").modal("hide");
@@ -299,6 +323,7 @@
                 console.log(res);
                 if(res == 1){
                     $("#ModalPersona").modal("hide");
+                    contList = 0 ;
                     tablaPersona.ajax.reload(null, false);
                 }else{
                     $("#ModalPersona").modal("hide");

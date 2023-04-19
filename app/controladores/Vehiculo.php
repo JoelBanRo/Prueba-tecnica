@@ -12,7 +12,7 @@ class Vehiculo extends Controlador {
         ];
         $this->vista('vehiculo/index', $datos);
     }
-
+ 
     public function AgreVehiculo(){
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $datos = [

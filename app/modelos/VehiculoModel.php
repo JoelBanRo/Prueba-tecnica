@@ -28,7 +28,7 @@ class VehiculoModel {
             return false;
         }
     }
-
+ 
 
     public function ObtnVehiculo($id_vehiculo){
         $this->db->query("SELECT * FROM vehiculo WHERE id = $id_vehiculo");

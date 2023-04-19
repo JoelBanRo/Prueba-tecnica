@@ -1,6 +1,6 @@
 <?php require_once RUTA_APP . '/vistas/inc/header.php'; ?>
 <a href="<?php echo RUTA_URL; ?>/paginas"><i class="fas fa-arrow-alt-circle-left"></i></a>
-
+ 
 <main>
     <div class="container mt-2">
         <div class="card">
@@ -156,7 +156,7 @@
                 {
                     data: null,
                     render : (data, row, type) => {
-                        return ' <div class="padreButtom" ><button onclick="EditarPersona(' + data.id + ')">Editar</button> <button onclick="EliminarVehiculo(' + data.id + ')">Borrar</button> </div>'
+                        return ' <div class="padreButtom" ><button onclick="EditarVehiculo(' + data.id + ')">Editar</button> <button onclick="EliminarVehiculo(' + data.id + ')">Borrar</button> </div>'
                     }
                 }
 
@@ -196,7 +196,7 @@
         });   
     }
 
-    function EditarPersona(id_vehiculo) {
+    function EditarVehiculo(id_vehiculo) {
         var datos;
         $('#tituloModal').text('Editar Vehiculo')
         $('.EditModal').show();

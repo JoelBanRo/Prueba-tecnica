@@ -64,50 +64,53 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <b>NOMBRE:</b>
-                                                <input class="form-control" type="text" name="nombre" id="nombre">
+                                                <input class="form-control" type="text" name="nombre" id="nombreE">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
                                                 <b>APELLIDO:</b>
-                                                <input class="form-control" type="text" name="apellido" id="apellido">
+                                                <input class="form-control" type="text" name="apellido" id="apellidoE">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
                                                 <b>IDENTIFICACION:</b>
-                                                <input class="form-control" type="text" name="identificacion" id="identificacion">
+                                                <input class="form-control" type="text" name="identificacion" id="identificacionE">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <b>FECHA NACIMIENTO:</b>
                                             <div class="col-12">
-                                                <input class="form-control" type="date" name="fecha_nacimiento" id="fecha_nacimiento">
+                                                <input class="form-control" type="date" name="fecha_nacimiento" id="fecha_nacimientoE">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <b>PROFECION O OFICIO:</b>
                                             <div class="col-12">
-                                                <input class="form-control" type="text" name="profecion" id="profecion">
+                                                <input class="form-control" type="text" name="profecion" id="profecionE">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <b>¿ES CASADO?:</b>
                                             <div class="col-12">
-                                                <input class="form-control" type="text" name="casado" id="casado">
+                                                <input class="form-control" type="text" name="casado" id="casadoE">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <b>INGRESOS MENSUALES</b>
                                             <div class="col-12">
-                                                <input class="form-control" type="text" name="ingreso" id="ingreso">
+                                                <input class="form-control" type="text" name="ingreso" id="ingresoE">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <b>VEHICULO ACTUAL</b>
-                                            <div class="col-12">
-                                                <input class="form-control" type="text" name="vehiculo" id="vehiculo">
-                                            </div>
+                                            <select class="form-select" aria-label="Default select example" name="vehiculo" id="vehiculoE">
+                                                <option selected>Selecciona un vehiculo</option>
+                                                <?php foreach($datos['listaVehiculo'] as $vehiculo): ?>
+                                                    <option value="<?php echo $vehiculo->id?>"><?php echo $vehiculo->modelo?></option>
+                                                <?php endforeach; ?>
+                                            </select>
                                         </div>
                                     </div>
                                     </form>
@@ -175,7 +178,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR </button>
                                         <button type="button" id="registroPersona" class="btn btn-primary btnGuardarAg">GUARDAR REGISTRO</button>
-                                        <button type="button" id="editPersona" class="btn btn-primary btnGuardar">GUARDAR </button>
+                                        <button type="button" id="editPersona" class="btn btn-primary btnGuardar">GUARDAR CAMBIOS</button>
                                         <button type="button" id="" class="btn btn-outline-danger btnEliminar">ELIMINAR </button>
                                     </div>
                                 </form>
@@ -307,7 +310,7 @@
 
     function EditarPersona(id_persona) {
         $('.BitModal').hide();
-        $('#tituloModal').text('Editar Persona')
+        $('#tituloModal').text('Editar Persona');
         $('.EditModal').show();
         $('.BorrarModal').hide();
         $('.AgreModald').hide();
@@ -317,16 +320,61 @@
         $("#ModalPersona").modal("show");
         $('#modal-dialog').removeClass('modal-dialog modal-lg');
         $('#modal-dialog').addClass('modal-dialog');
-        // $.ajax({
-        //     url: '<?php //echo RUTA_URL?>/Persona/EditarPersona',
-        //     type: 'POST',
-        //     data: {
-        //         id_persona
-        //     }
-        // }).done((res) => {
-        //     console.log(res);
-        //     $("#ModalPersona").modal("show");
-        // });
+        $.ajax({
+            url: '<?php echo RUTA_URL?>/Persona/ObtnPersona',
+            type: 'POST',
+            data: {
+                id_persona
+            }
+        }).done((res) => {
+            datos = JSON.parse(res);
+            console.log(datos[0].fecha_nacimiento);
+            $('#nombreE').val(datos[0].nombres);
+            $('#apellidoE').val(datos[0].apellidos);
+            $('#identificacionE').val(datos[0].identificacion);
+            $('#fecha_nacimientoE').val(datos[0].fecha_nacimiento);
+            $('#profecionE').val(datos[0].profesion_oficio);
+            $('#casadoE').val(datos[0].es_casado);
+            $('#ingresoE').val(datos[0].ingresos_mensuales);
+            $("#vehiculoE option[value="+ datos[0].vehiculo_actual +"]").attr("selected",true);
+
+        });
+
+        $('.btnGuardar').on('click', function(e) {
+            e.preventDefault();
+
+
+            // var datosForm = $('#form1').serialize();
+            // datosForm = datosForm + '&id=' + datos[0].id;
+            // console.log(datosForm);
+
+            nombres = $('#nombreE').val();
+            apellidos = $('#apellidoE').val();
+            identificacion = $('#identificacionE').val();
+            fecha_nacimiento = $('#fecha_nacimientoE').val();
+            profesion_oficio = $('#profecionE').val();
+            es_casado = $('#casadoE').val();
+            ingresos_mensuales = $('#ingresoE').val();
+            vehiculo_actual = $("#vehiculoE").val();
+
+             $.ajax({
+                url: '<?php echo RUTA_URL?>/Persona/EditPersona',
+                type: 'POST',
+                data: { id:datos[0].id, nombre:nombres, apellido:apellidos, identificacion:identificacion,fecha_nacimiento:fecha_nacimiento,profesion:profesion_oficio,casado:es_casado,ingreso:ingresos_mensuales,vehiculo:vehiculo_actual }
+            }).done((res) => {
+                
+                if(res == 1){
+                    $("#ModalPersona").modal("hide");
+                    alert("exito");
+                    $('#form1')[0].reset();
+                    tablaPersona.ajax.reload(null, false);
+                }else{
+                    $("#ModalPersona").modal("hide");
+                    alert('incoveniente en el proceso');
+                }
+            });
+        });
+
     }
 
     function EiminarPersona(id_persona) {

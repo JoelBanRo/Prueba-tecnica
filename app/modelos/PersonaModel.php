@@ -45,10 +45,10 @@
         return $this->db->registros();
     }
 
-    public function AgregarHistorial($datos){
+    public function AgregarHistorial($datosHistorial){
         $this->db->query("INSERT INTO historial (id, id_persona, id_vehiculo) VALUES (NULL, :id_persona, :id_vehiculo )");
-        $this->db->bind(':id_persona', $datos['id_persona']);
-        $this->db->bind(':id_vehiculo', $datos['id_vehiculo']);
+        $this->db->bind(':id_persona', $datosHistorial['id_persona']);
+        $this->db->bind(':id_vehiculo', $datosHistorial['id_vehiculo']);
         if ($this->db->execute()) {
             return true;
         }else{
@@ -56,15 +56,24 @@
         }
     }
 
+    public function ObtnVehiActual($identificacion){
+        $this->db->query("SELECT vehiculo_actual FROM persona WHERE  identificacion = '$identificacion'");
+        $resultados = $this->db->registro();
+        return $resultados;
+    }
 
-    public function ObtenPersona(){
-        $this->db->query("SELECT * FROM persona WHERE id_usuario");
+
+    public function ObtnPersona($id_usuario){
+        $this->db->query("SELECT * FROM persona WHERE id = $id_usuario");
+        return $this->db->registros();
     }
 
 
     public function EditPersona($datos){
-        $this->db->query('UPDATE vehiculo SET placa = :placa, marca = :marca, modelo = :modelo, numero_puertas = :numPuertasE, tipo_vehiculo = :tiVehiculoE WHERE id = :id');
-
+        $this->db->query('UPDATE persona SET nombres=:nombres,apellidos=:apellidos,fecha_nacimiento=:fecha_nacimiento,identificacion=:identificacion,profesion_oficio=:profesion_oficio,es_casado=:es_casado,ingresos_mensuales=:ingresos_mensuales,vehiculo_actual=:vehiculo_actual WHERE id = :id');
+        
+        $this->db->bind(':id', $datos['id']);
+        $this->db->bind(':nombres', $datos['nombres']);
         $this->db->bind(':nombres', $datos['nombres']);
         $this->db->bind(':apellidos', $datos['apellido']);
         $this->db->bind(':fecha_nacimiento', $datos['fecha_nacimiento']);
@@ -85,7 +94,7 @@
 
     public function ElimPersona($id_persona){
         $this->db->query("DELETE FROM persona WHERE id = $id_persona");
-        if ($this->db->execute()) {
+        if($this->db->execute()){
             return true;
         }else{
             return false;

@@ -34,11 +34,11 @@ class Persona extends Controlador{
             $this->ModeloPersona->AgrePersona($datos);
             $id_persona = $this->ModeloPersona->PersonasDocumento($identificacion);
             json_encode($id_persona);
-            $datos =  [
+            $datosHistorial =  [
                 'id_persona' => $id_persona->id_Persona,
                 'id_vehiculo' => $id_vehiculo
             ];
-            $resul = $this->ModeloPersona->AgregarHistorial($datos);
+            $resul = $this->ModeloPersona->AgregarHistorial($datosHistorial);
             echo $resul;
 
         }else{
@@ -62,7 +62,7 @@ class Persona extends Controlador{
     }
 
     public function ObtnPersona(){
-        $id_persona = $_POST['id_vehiculo'];
+        $id_persona = $_POST['id_persona'];
         $resul = $this->ModeloPersona->ObtnPersona($id_persona);
 
         echo json_encode($resul);
@@ -70,16 +70,34 @@ class Persona extends Controlador{
 
     public function EditPersona(){
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $identificacion = trim($_POST['identificacion']);
+            $id_vehiculo = trim($_POST['vehiculo']);
+            $id = trim($_POST['id']);
             $datos = [
+                'id' => $id,
                 'nombres' => trim($_POST['nombre']),
                 'apellido' => trim($_POST['apellido']),
-                'identificacion' => trim($_POST['identificacion']),
+                'identificacion' => $identificacion,
                 'fecha_nacimiento' => trim($_POST['fecha_nacimiento']),
                 'profesion' => trim($_POST['profesion']),
                 'casado' => trim($_POST['casado']),
                 'ingreso' => trim($_POST['ingreso']),
-                'vehiculo' => trim($_POST['vehiculo']),
+                'vehiculo' => $id_vehiculo,
             ];
+
+            
+            $vehiculoActual = $this->ModeloPersona->ObtnVehiActual($identificacion);
+            json_encode($vehiculoActual);
+
+            if (($vehiculoActual->vehiculo_actual) != $id_vehiculo){
+
+                $datosHistorial =  [
+                'id_persona' => $id,
+                'id_vehiculo' => $id_vehiculo
+                ];
+
+                $resul = $this->ModeloPersona->AgregarHistorial($datosHistorial);
+            }
 
             $resul = $this->ModeloPersona->EditPersona($datos);
 
@@ -87,7 +105,7 @@ class Persona extends Controlador{
         }
     }
 
-    public function ElimPersona(){
+    public function EiminarPersona(){
         $id_persona = $_POST['id_persona'];
         $resul = $this->ModeloPersona->ElimPersona($id_persona);
         echo $resul;
